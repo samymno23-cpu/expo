@@ -26,6 +26,7 @@
 
 - Empty HMR update should not reset the error overlay ([#40741](https://github.com/expo/expo/pull/40741) by [@krystofwoldrich](https://github.com/krystofwoldrich))
 - Fixed broken `Updates.reloadAsync`. ([#41260](https://github.com/expo/expo/pull/41260) by [@kudo](https://github.com/kudo))
+- Prevent Firefox from showing Metro HMR disconnection warning on page refresh ([#41971](https://github.com/expo/expo/pull/41971) by [@kitten](https://github.com/kitten))
 
 ### 💡 Others
 
