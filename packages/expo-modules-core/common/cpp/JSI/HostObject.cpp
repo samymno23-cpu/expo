@@ -5,7 +5,7 @@
 namespace expo {
 
 HostObject::HostObject(GetFunction get, SetFunction set, GetPropertyNamesFunction getPropertyNames, DeallocFunction dealloc)
-: _get(get), _set(set), _getPropertyNames(getPropertyNames), _dealloc(dealloc) {}
+  : jsi::HostObject(), _get(get), _set(set), _getPropertyNames(getPropertyNames), _dealloc(dealloc) {}
 
 HostObject::~HostObject() {
   _dealloc();
@@ -31,9 +31,9 @@ std::vector<jsi::PropNameID> HostObject::getPropertyNames(jsi::Runtime &runtime)
   return propertyNamesIds;
 }
 
-const jsi::Object HostObject::makeObject(jsi::Runtime &runtime, GetFunction get, SetFunction set, GetPropertyNamesFunction getPropertyNames, DeallocFunction dealloc) {
-  auto hostObjectPtr = std::make_shared<HostObject>(get, set, getPropertyNames, dealloc);
-  return jsi::Object::createFromHostObject(runtime, hostObjectPtr);
+jsi::Object HostObject::makeObject(jsi::Runtime &runtime, GetFunction get, SetFunction set, GetPropertyNamesFunction getPropertyNames, DeallocFunction dealloc) {
+  std::shared_ptr<jsi::HostObject> ptr = std::make_shared<expo::HostObject>(get, set, getPropertyNames, dealloc);
+  return jsi::Object::createFromHostObject(runtime, ptr);
 }
 
 } // namespace expo

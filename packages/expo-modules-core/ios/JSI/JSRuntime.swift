@@ -1,6 +1,5 @@
 // Copyright 2025-present 650 Industries. All rights reserved.
 
-@available(iOS 16.4, *)
 open class JavaScriptRuntime: Equatable, @unchecked Sendable {
   // TODO: Make it internal
   public let pointee: facebook.jsi.Runtime
@@ -54,23 +53,26 @@ open class JavaScriptRuntime: Equatable, @unchecked Sendable {
     getPropertyNames: @escaping () -> [String],
     dealloc: @escaping () -> Void
   ) -> JavaScriptObject {
-    return createObject()
-//    let hostObject = expo.HostObject.makeObject(
-//      pointee,
-//      { (propertyName: std.string) in
-//        return get(String(propertyName)).pointee
-//      },
-//      { (propertyName: std.string, value: consuming facebook.jsi.Value) in
-//        set(String(propertyName), JavaScriptValue(self, value))
-//      },
-//      {
-//        fatalError()
-//      },
-//      {
-//        dealloc()
-//      }
-//    )
-//    return JavaScriptObject(self, hostObject)
+//    func destroy(context: UnsafeMutableRawPointer) {
+//      // Release the void* holding our `ClosureWrapper`
+//      Unmanaged<AnyObject>.fromOpaque(context).release()
+//    }
+
+    let getFn = expo.HostObject.GetFunction { (propertyName: std.string)  in
+      return .undefined()
+      //        return get(String(propertyName)).pointee
+    }
+    let setFn = expo.HostObject.SetFunction { (propertyName: std.string, value: borrowing facebook.jsi.Value) in
+      set(String(propertyName), JavaScriptValue(self, value))
+    }
+    let getPropertyNamesFn = expo.HostObject.GetPropertyNamesFunction {
+      return []
+    }
+    let deallocFn = expo.HostObject.DeallocFunction {
+//      dealloc()
+    }
+    let hostObject = expo.HostObject.makeObject(pointee, getFn, setFn, getPropertyNamesFn, deallocFn)
+    return JavaScriptObject(self, hostObject)
   }
 
   // MARK: - Creating functions
