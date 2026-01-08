@@ -14,7 +14,7 @@ type ResponseInitLike = Omit<ResponseInit, 'headers'> & {
     cf?: unknown;
     webSocket?: unknown;
 };
-type CallbackRouteType = 'html' | 'api' | 'notFoundHtml' | 'notAllowedApi';
+type CallbackRouteType = 'html' | 'api' | 'loader' | 'notFoundHtml' | 'notAllowedApi';
 type CallbackRoute = (Route & {
     type: CallbackRouteType;
 }) | {
@@ -36,7 +36,7 @@ export interface RequestHandlerInput {
     getRoutesManifest(): Promise<Manifest | null>;
     getApiRoute(route: Route): Promise<any>;
     getMiddleware(route: MiddlewareInfo): Promise<MiddlewareModule>;
-    getLoaderData(request: Request, route: Route): Promise<unknown>;
+    getLoaderData(request: Request, route: Route): Promise<Response>;
 }
 export declare function createRequestHandler({ getRoutesManifest, getHtml, getApiRoute, getMiddleware, getLoaderData, beforeErrorResponse, beforeResponse, beforeHTMLResponse, beforeAPIResponse, }: RequestHandlerParams & RequestHandlerInput): (request: Request) => Promise<Response>;
 export {};

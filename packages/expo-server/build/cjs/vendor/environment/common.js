@@ -85,8 +85,9 @@ function createEnvironment(input) {
             if (renderer) {
                 let renderOptions;
                 try {
-                    const data = await executeLoader(request, route);
-                    if (data !== null) {
+                    const result = await executeLoader(request, route);
+                    if (result !== null) {
+                        const data = (0, matchers_1.isResponse)(result) ? await result.json() : (result ?? {});
                         renderOptions = { loader: { data } };
                     }
                 }
@@ -129,7 +130,11 @@ function createEnvironment(input) {
             return mod;
         },
         async getLoaderData(request, route) {
-            return executeLoader(request, route);
+            const result = await executeLoader(request, route);
+            if (result instanceof Response) {
+                return result;
+            }
+            return Response.json(result ?? {});
         },
     };
 }

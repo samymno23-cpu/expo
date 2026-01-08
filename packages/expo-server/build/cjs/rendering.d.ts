@@ -18,6 +18,6 @@ export interface LoaderModule {
     loader?(args: {
         params: Record<string, string>;
         request: Request;
-    }): Promise<unknown> | unknown;
+    }): Promise<Response | unknown> | Response | unknown;
 }
 export type SsrRenderFn = (request: Request, options?: RenderOptions) => Promise<string>;

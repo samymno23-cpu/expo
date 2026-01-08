@@ -93,13 +93,8 @@ export function createRequestHandler({ getRoutesManifest, getHtml, getApiRoute, 
                     // NOTE(@hassankhan): Relocate the request rewriting logic from here
                     url.pathname = matchedPath;
                     const loaderRequest = new Request(url, request);
-                    const data = await getLoaderData(loaderRequest, route);
-                    return createResponse('api', route, JSON.stringify(data), {
-                        status: 200,
-                        headers: new Headers({
-                            'Content-Type': 'application/json',
-                        }),
-                    });
+                    const loaderResponse = await getLoaderData(loaderRequest, route);
+                    return createResponseFrom('loader', route, loaderResponse);
                 }
                 const html = await getHtml(request, route);
                 return respondHTML(html, route);
