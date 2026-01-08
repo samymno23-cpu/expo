@@ -51,6 +51,7 @@ describe.each(
     expect(files).toContain('_expo/loaders/env.js');
     expect(files).toContain('_expo/loaders/second.js');
     expect(files).toContain('_expo/loaders/posts/[postId].js');
+    expect(files).toContain('_expo/loaders/headers.js');
   });
 
   it('routes.json has loader paths', async () => {
@@ -63,11 +64,13 @@ describe.each(
     const secondRoute = routesJson.htmlRoutes.find((r: any) => r.page === '/second');
     const postRoute = routesJson.htmlRoutes.find((r: any) => r.page === '/posts/[postId]');
     const indexRoute = routesJson.htmlRoutes.find((r: any) => r.page === '/index');
+    const headersRoute = routesJson.htmlRoutes.find((r: any) => r.page === '/headers');
 
     // Routes with loaders should have loader path
     expect(envRoute?.loader).toBe('_expo/loaders/env.js');
     expect(secondRoute?.loader).toBe('_expo/loaders/second.js');
     expect(postRoute?.loader).toBe('_expo/loaders/posts/[postId].js');
+    expect(headersRoute?.loader).toBe('_expo/loaders/headers.js');
 
     // Route without loader should not have loader property
     expect(indexRoute?.loader).toBeUndefined();
@@ -96,5 +99,17 @@ describe.each(
     expect(response.status).toBe(200);
     const data = await response.json();
     expect(data).toHaveProperty('TEST_SECRET_KEY', 'test-secret-key');
+  });
+
+  it('loader returning Response forwards headers', async () => {
+    const response = await server.fetchAsync('/_expo/loaders/headers');
+    expect(response.status).toBe(200);
+    expect(response.headers.get('content-type')).toContain('application/json');
+    expect(response.headers.get('cache-control')).toBe('public, max-age=3600');
+    expect(response.headers.get('x-custom-header')).toBe('test-value');
+
+    const data = await response.json();
+    expect(data).toHaveProperty('data', 'headers');
+    expect(data).toHaveProperty('timestamp');
   });
 });

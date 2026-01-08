@@ -16,7 +16,10 @@ export interface RenderOptions {
 
 /** Module exported from loader bundle, typically `_expo/loaders/[ROUTE].js` */
 export interface LoaderModule {
-  loader?(args: { params: Record<string, string>; request: Request }): Promise<unknown> | unknown;
+  loader?(args: { params: Record<string, string>; request: Request }):
+    | Promise<Response | unknown>
+    | Response
+    | unknown;
 }
 
 export type SsrRenderFn = (request: Request, options?: RenderOptions) => Promise<string>;

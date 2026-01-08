@@ -1,6 +1,6 @@
 import type { Manifest, MiddlewareInfo, RawManifest, Route } from '../../manifest';
 import type { LoaderModule, RenderOptions, ServerRenderModule, SsrRenderFn } from '../../rendering';
-import { parseParams } from '../../utils/matchers';
+import { isResponse, parseParams } from '../../utils/matchers';
 
 function initManifestRegExp(manifest: RawManifest): Manifest {
   return {
@@ -104,8 +104,9 @@ export function createEnvironment(input: EnvironmentInput) {
         let renderOptions: RenderOptions | undefined;
 
         try {
-          const data = await executeLoader(request, route);
-          if (data !== null) {
+          const result = await executeLoader(request, route);
+          if (result !== null) {
+            const data = isResponse(result) ? await result.json() : (result ?? {});
             renderOptions = { loader: { data } };
           }
         } catch (error) {
@@ -150,8 +151,14 @@ export function createEnvironment(input: EnvironmentInput) {
       return mod;
     },
 
-    async getLoaderData(request: Request, route: Route): Promise<unknown> {
-      return executeLoader(request, route);
+    async getLoaderData(request: Request, route: Route): Promise<Response> {
+      const result = await executeLoader(request, route);
+
+      if (result instanceof Response) {
+        return result;
+      }
+
+      return Response.json(result ?? {});
     },
   };
 }

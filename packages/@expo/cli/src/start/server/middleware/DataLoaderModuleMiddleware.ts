@@ -17,7 +17,10 @@ export class DataLoaderModuleMiddleware extends ExpoMiddleware {
   constructor(
     protected projectRoot: string,
     protected appDir: string,
-    private executeServerDataLoaderAsync: (url: URL, route: RouteInfo<RegExp>) => Promise<any>,
+    private executeServerDataLoaderAsync: (
+      url: URL,
+      route: RouteInfo<RegExp>
+    ) => Promise<Response | undefined>,
     private getDevServerUrl: () => string
   ) {
     super(projectRoot, [LOADER_MODULE_ENDPOINT]);
@@ -69,15 +72,27 @@ export class DataLoaderModuleMiddleware extends ExpoMiddleware {
         throw new Error(`No matching route for ${routePath}`);
       }
 
-      const loaderData = await this.executeServerDataLoaderAsync(
+      const response = await this.executeServerDataLoaderAsync(
         new URL(routePath, this.getDevServerUrl()),
         matchingRoute
       );
 
-      res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+      if (!response) {
+        res.statusCode = 404;
+        res.end('{}');
+        return;
+      }
+
+      res.statusCode = response.status;
+      // In development, we don't want to cache loader data so that changes to the loader function
+      // will be immediately reflected. However, users can override this behavior by setting the
+      // `Cache-Control` header in their loader's `Response` object.
       res.setHeader('Cache-Control', 'no-cache');
-      res.statusCode = 200;
-      res.end(JSON.stringify(loaderData ?? {}));
+      for (const [name, value] of response.headers.entries()) {
+        res.setHeader(name, value);
+      }
+      const body = await response.text();
+      res.end(body);
     } catch (error) {
       console.error(`Failed to generate loader module for ${pathname}:`, error);
       res.statusCode = 500;

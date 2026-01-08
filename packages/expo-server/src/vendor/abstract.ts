@@ -25,7 +25,7 @@ type ResponseInitLike = Omit<ResponseInit, 'headers'> & {
   cf?: unknown;
   webSocket?: unknown;
 };
-type CallbackRouteType = 'html' | 'api' | 'notFoundHtml' | 'notAllowedApi';
+type CallbackRouteType = 'html' | 'api' | 'loader' | 'notFoundHtml' | 'notAllowedApi';
 type CallbackRoute = (Route & { type: CallbackRouteType }) | { type: null };
 // NOTE(@krystofwoldrich): For better general usability of the callback bodyInit could be also passed as arg.
 // But we don't have a use case for it now, same for full HeaderInit type.
@@ -56,7 +56,7 @@ export interface RequestHandlerInput {
   getRoutesManifest(): Promise<Manifest | null>;
   getApiRoute(route: Route): Promise<any>;
   getMiddleware(route: MiddlewareInfo): Promise<MiddlewareModule>;
-  getLoaderData(request: Request, route: Route): Promise<unknown>;
+  getLoaderData(request: Request, route: Route): Promise<Response>;
 }
 
 export function createRequestHandler({
@@ -157,13 +157,8 @@ export function createRequestHandler({
           // NOTE(@hassankhan): Relocate the request rewriting logic from here
           url.pathname = matchedPath;
           const loaderRequest = new Request(url, request);
-          const data = await getLoaderData(loaderRequest, route);
-          return createResponse('api', route, JSON.stringify(data), {
-            status: 200,
-            headers: new Headers({
-              'Content-Type': 'application/json',
-            }),
-          });
+          const loaderResponse = await getLoaderData(loaderRequest, route);
+          return createResponseFrom('loader', route, loaderResponse);
         }
 
         const html = await getHtml(request, route);

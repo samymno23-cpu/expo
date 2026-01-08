@@ -441,7 +441,7 @@ describe('getMiddleware', () => {
 });
 
 describe('getLoaderData', () => {
-  it('returns loader data when route has loader', async () => {
+  it('returns Response with loader data when route has loader', async () => {
     const loaderData = { userId: 123 };
     const loaderModule = { loader: jest.fn().mockResolvedValue(loaderData) };
     const input = createMockInput({
@@ -459,14 +459,15 @@ describe('getLoaderData', () => {
       })
     );
 
-    expect(result).toEqual(loaderData);
+    expect(result).toBeInstanceOf(Response);
+    expect(await result!.json()).toEqual(loaderData);
     expect(loaderModule.loader).toHaveBeenCalledWith({
       params: {},
       request: expect.any(Request),
     });
   });
 
-  it('returns null when route has no loader', async () => {
+  it('returns Response with empty object when route has no loader', async () => {
     const input = createMockInput();
     const env = createEnvironment(input);
 
@@ -479,10 +480,11 @@ describe('getLoaderData', () => {
       })
     );
 
-    expect(result).toBeNull();
+    expect(result).toBeInstanceOf(Response);
+    expect(await result!.json()).toEqual({});
   });
 
-  it('returns null when loader module has no loader function', async () => {
+  it('returns Response with empty object when loader module has no loader function', async () => {
     const loaderModule = { someOtherExport: 'value' };
     const input = createMockInput({
       modules: { '_expo/loaders/broken.js': loaderModule },
@@ -499,7 +501,8 @@ describe('getLoaderData', () => {
       })
     );
 
-    expect(result).toBeNull();
+    expect(result).toBeInstanceOf(Response);
+    expect(await result!.json()).toEqual({});
   });
 
   it('parses params correctly for dynamic routes', async () => {
