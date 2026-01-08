@@ -1,5 +1,7 @@
 // Copyright 2025-present 650 Industries. All rights reserved.
 
+@_implementationOnly import ExpoModulesJSI
+
 public struct JavaScriptHostObject: ~Copyable {
   public typealias GetClosure = (_ propertyName: String) -> JavaScriptValue
   public typealias SetClosure = (_ propertyName: String, _ value: consuming JavaScriptValue) -> Void
@@ -7,7 +9,7 @@ public struct JavaScriptHostObject: ~Copyable {
   public typealias DeallocClosure = () -> Void
 
   internal weak var runtime: JavaScriptRuntime?
-  internal let pointee: expo.HostObject
+//  internal let pointee: expo.HostObject
 
 //  public init(
 //    _ runtime: JavaScriptRuntime,

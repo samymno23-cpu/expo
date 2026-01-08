@@ -2,9 +2,7 @@
 
 #include <sstream>
 #include <utility>
-#include "JSIUtils.h"
-
-namespace jsi = facebook::jsi;
+#include "Utils.h"
 
 namespace expo::common {
 
@@ -23,16 +21,16 @@ jsi::Function createClass(jsi::Runtime &runtime, const char *name, ClassConstruc
   jsi::Object prototype = klass.getPropertyAsObject(runtime, "prototype");
   jsi::PropNameID nativeConstructorPropId = jsi::PropNameID::forAscii(runtime, nativeConstructorKey);
   jsi::Function nativeConstructor = jsi::Function::createFromHostFunction(
-    runtime,
-    nativeConstructorPropId,
-    // The paramCount is not obligatory to match, it only affects the `length` property of the function.
-    0,
-    [constructor = std::move(constructor)](jsi::Runtime &runtime, const jsi::Value &thisValue, const jsi::Value *args, size_t count) -> jsi::Value {
-      if (constructor) {
-        return constructor(runtime, thisValue, args, count);
-      }
-      return jsi::Value(runtime, thisValue);
-    });
+                                                                          runtime,
+                                                                          nativeConstructorPropId,
+                                                                          // The paramCount is not obligatory to match, it only affects the `length` property of the function.
+                                                                          0,
+                                                                          [constructor = std::move(constructor)](jsi::Runtime &runtime, const jsi::Value &thisValue, const jsi::Value *args, size_t count) -> jsi::Value {
+                                                                            if (constructor) {
+                                                                              return constructor(runtime, thisValue, args, count);
+                                                                            }
+                                                                            return jsi::Value(runtime, thisValue);
+                                                                          });
 
   jsi::Object descriptor(runtime);
   descriptor.setProperty(runtime, "value", jsi::Value(runtime, nativeConstructor));
@@ -103,25 +101,25 @@ void defineProperty(jsi::Runtime &runtime, const jsi::Object &object, const char
   if (descriptor.get) {
     jsi::PropNameID getPropName = jsi::PropNameID::forAscii(runtime, "get", 3);
     jsi::Function get = jsi::Function::createFromHostFunction(
-      runtime,
-      getPropName,
-      0,
-      [getter = descriptor.get](jsi::Runtime &runtime, const jsi::Value &thisValue, const jsi::Value *args, size_t count) -> jsi::Value {
-        return getter(runtime, thisValue.asObject(runtime));
-      });
+                                                              runtime,
+                                                              getPropName,
+                                                              0,
+                                                              [getter = descriptor.get](jsi::Runtime &runtime, const jsi::Value &thisValue, const jsi::Value *args, size_t count) -> jsi::Value {
+                                                                return getter(runtime, thisValue.asObject(runtime));
+                                                              });
 
     jsDescriptor.setProperty(runtime, getPropName, get);
   }
   if (descriptor.set) {
     jsi::PropNameID setPropName = jsi::PropNameID::forAscii(runtime, "set", 3);
     jsi::Function set = jsi::Function::createFromHostFunction(
-      runtime,
-      setPropName,
-      1,
-      [setter = descriptor.set](jsi::Runtime &runtime, const jsi::Value &thisValue, const jsi::Value *args, size_t count) -> jsi::Value {
-        setter(runtime, thisValue.asObject(runtime), jsi::Value(runtime, args[0]));
-        return jsi::Value::undefined();
-      });
+                                                              runtime,
+                                                              setPropName,
+                                                              1,
+                                                              [setter = descriptor.set](jsi::Runtime &runtime, const jsi::Value &thisValue, const jsi::Value *args, size_t count) -> jsi::Value {
+                                                                setter(runtime, thisValue.asObject(runtime), jsi::Value(runtime, args[0]));
+                                                                return jsi::Value::undefined();
+                                                              });
 
     jsDescriptor.setProperty(runtime, setPropName, set);
   }

@@ -1,6 +1,7 @@
 // Copyright 2025-present 650 Industries. All rights reserved.
 
 import ExpoModulesJSI
+@_implementationOnly import ExpoModulesJSISwift
 
 @JavaScriptActor
 internal struct ExpoRuntimeInstaller {

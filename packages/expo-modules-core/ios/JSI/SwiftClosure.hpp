@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef __cplusplus
+
 #import <functional>
 #import <memory>
 
@@ -28,3 +30,5 @@ private:
 };
 
 } // namespace expo
+
+#endif

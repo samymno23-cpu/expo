@@ -39,11 +39,11 @@
   return self;
 }
 
-- (facebook::jsi::Runtime &)pull
+- (nonnull const void *)pull
 {
   facebook::jsi::Runtime &runtime = *_runtime;
   _runtime = nullptr;
-  return runtime;
+  return reinterpret_cast<void *>(&runtime);
 }
 
 @end

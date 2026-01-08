@@ -10,5 +10,6 @@
 #import <ExpoModulesJSI/Runtime.hpp>
 #import <ExpoModulesJSI/Value.hpp>
 #import <ExpoModulesJSI/SwiftClosure.hpp>
+#import <ExpoModulesJSI/JSRuntime.h>
 
 #endif

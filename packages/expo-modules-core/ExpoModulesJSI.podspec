@@ -46,8 +46,8 @@ Pod::Spec.new do |s|
     'DEFINES_MODULE' => 'YES',
     'HEADER_SEARCH_PATHS' => header_search_paths.join(' '),
     'CLANG_CXX_LANGUAGE_STANDARD' => 'c++20',
-    'SWIFT_OBJC_INTEROP_MODE' => 'objcxx',
-    'OTHER_SWIFT_FLAGS' => '-Xfrontend -clang-header-expose-decls=has-expose-attr',
+    # 'SWIFT_OBJC_INTEROP_MODE' => 'objcxx',
+    # 'OTHER_SWIFT_FLAGS' => '-Xfrontend -clang-header-expose-decls=has-expose-attr',
     'GCC_PREPROCESSOR_DEFINITIONS' => 'EXPO_MODULES_JSI=1'
   }
 
@@ -60,27 +60,15 @@ Pod::Spec.new do |s|
   s.dependency 'React-Core'
   s.dependency 'ReactCommon'
 
-  s.source_files = ['ios/JSI/**/*.{h,hpp,m,mm,swift,cpp}', 'common/cpp/JSI/**/*.{h,hpp,cpp}']
+  s.source_files = ['ios/JSI/**/*.{h,hpp,m,mm,cpp}', 'common/cpp/JSI/**/*.{h,hpp,cpp}']
   s.exclude_files = ['ios/JSI/Tests']
-  s.private_header_files = [
-    'common/cpp/JSI/*.{h,hpp}',
-    'ios/JSI/*.{h,hpp}',
-    'ios/JSI/JSwift/*.{h,hpp}',
-  ]
-  s.public_header_files = [
-    'common/cpp/JSI/Public/*.{h,hpp}',
-    'ios/JSI/Public/*.{h,hpp}',
-  ]
-
-  s.test_spec 'Tests' do |test_spec|
-    # Use higher deployment targets than the module itself.
-    # It is a bit of a hassle to do availability checks in Swift Testing.
-    # Our Swift/C++ interop requires iOS 16.4 as we need macros for reference types.
-    test_spec.platforms = {
-      :ios => '17.0',
-      :osx => '12.0',
-      :tvos => '17.0'
-    }
-    test_spec.source_files = 'ios/JSI/Tests/**/*.{m,swift}'
-  end
+  # s.private_header_files = [
+  #   'common/cpp/JSI/*.{h,hpp}',
+  #   'ios/JSI/*.{h,hpp}',
+  #   'ios/JSI/JSwift/*.{h,hpp}',
+  # ]
+  # s.public_header_files = [
+  #   'common/cpp/JSI/Public/*.{h,hpp}',
+  #   'ios/JSI/Public/*.{h,hpp}',
+  # ]
 end

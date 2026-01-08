@@ -2,7 +2,7 @@
 
 #import "Runtime.hpp"
 #import "Object.hpp"
-#import "ExpoModulesJSI-Swift.h"
+//#import "ExpoModulesJSI-Swift.h"
 
 namespace expo::jswift {
 

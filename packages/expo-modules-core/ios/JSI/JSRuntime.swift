@@ -1,23 +1,39 @@
 // Copyright 2025-present 650 Industries. All rights reserved.
 
+@_implementationOnly import React
+@_implementationOnly import ExpoModulesJSI
+
 open class JavaScriptRuntime: Equatable, @unchecked Sendable {
-  // TODO: Make it internal
-  public let pointee: facebook.jsi.Runtime
-  internal let scheduler: expo.RuntimeScheduler
+  internal/*!*/ let pointee: facebook.jsi.Runtime
+  internal/*!*/ let scheduler: expo.RuntimeScheduler
 
   /**
    Creates a runtime from a JSI runtime.
    */
-  public init(_ runtime: facebook.jsi.Runtime) {
+  internal/*!*/ /*override*/ init(_ runtime: facebook.jsi.Runtime) {
     self.pointee = runtime
     self.scheduler = expo.RuntimeScheduler(runtime)
+//    super.init(runtime)
   }
 
   /**
    Creates Hermes runtime.
    */
-  public convenience init() {
-    self.init(expo.createHermesRuntime())
+  public /*override*/ init() {
+    self.pointee = expo.createHermesRuntime()
+    self.scheduler = expo.RuntimeScheduler(pointee)
+  }
+
+  public init(_ runtime: UnsafeRawPointer) {
+    self.pointee = runtime.load(as: facebook.jsi.Runtime.self)
+    self.scheduler = expo.RuntimeScheduler(pointee)
+  }
+
+  /**
+   DO NOT USE IT
+   */
+  public var unsafe_pointee: UnsafeRawPointer {
+    return UnsafeRawPointer(Unmanaged<facebook.jsi.Runtime>.passUnretained(pointee).toOpaque())
   }
 
   /**

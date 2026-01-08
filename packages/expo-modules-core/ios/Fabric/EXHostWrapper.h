@@ -24,6 +24,6 @@ NS_SWIFT_NAME(ExpoHostWrapper)
 @interface EXRuntimeWrapper : NSObject
 #ifdef __cplusplus
 - (nonnull instancetype)initWithRuntime:(facebook::jsi::Runtime &)runtime;
-- (facebook::jsi::Runtime &)pull;
 #endif // __cplusplus
+- (nonnull const void *)pull;
 @end

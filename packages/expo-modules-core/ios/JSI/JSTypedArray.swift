@@ -1,5 +1,8 @@
 // Copyright 2025-present 650 Industries. All rights reserved.
 
+@_implementationOnly import React
+@_implementationOnly import ExpoModulesJSI
+
 public struct JavaScriptTypedArray: ~Copyable {
   internal weak var runtime: JavaScriptRuntime?
   internal let pointee: expo.TypedArray

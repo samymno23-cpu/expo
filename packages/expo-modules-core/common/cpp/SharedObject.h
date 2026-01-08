@@ -4,16 +4,9 @@
 
 #ifdef __cplusplus
 
-#ifdef __APPLE__
-#include <ExpoModulesJSI/JSIUtils.h>
-//#include <ExpoModulesJSI/ObjectDeallocator.h>
-#else
-#include "JSIUtils.h"
-#include "ObjectDeallocator.h"
-#endif
-
 #include <jsi/jsi.h>
 
+#include "Utils.h"
 #include "EventEmitter.h"
 
 namespace jsi = facebook::jsi;

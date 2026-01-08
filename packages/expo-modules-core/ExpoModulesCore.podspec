@@ -90,7 +90,7 @@ Pod::Spec.new do |s|
     'OTHER_SWIFT_FLAGS' => "$(inherited) #{new_arch_enabled ? new_arch_compiler_flags : ''} -Xfrontend -clang-header-expose-decls=has-expose-attr",
     'HEADER_SEARCH_PATHS' => header_search_paths.join(' '),
     'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) EXPO_MODULES_CORE_VERSION=' + package['version'],
-    'SWIFT_OBJC_INTEROP_MODE' => 'objcxx',
+    # 'SWIFT_OBJC_INTEROP_MODE' => 'objcxx',
   }
   s.user_target_xcconfig = {
     "HEADER_SEARCH_PATHS" => [
@@ -107,6 +107,7 @@ Pod::Spec.new do |s|
   end
 
   s.dependency 'ExpoModulesJSI'
+  s.dependency 'ExpoModulesJSISwift'
 
   s.dependency 'React-Core'
   s.dependency 'ReactCommon/turbomodule/core'

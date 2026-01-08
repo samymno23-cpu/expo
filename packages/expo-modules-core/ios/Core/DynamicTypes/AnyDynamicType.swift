@@ -1,6 +1,6 @@
 // Copyright 2021-present 650 Industries. All rights reserved.
 
-import ExpoModulesJSI
+import ExpoModulesJSISwift
 
 /**
  A protocol whose intention is to wrap any type

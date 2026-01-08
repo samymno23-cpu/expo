@@ -55,6 +55,7 @@ PODS:
     - React-Core
   - ExpoModulesCore (3.0.16):
     - ExpoModulesJSI
+    - ExpoModulesJSISwift
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -79,6 +80,7 @@ PODS:
     - Yoga
   - ExpoModulesCore/Tests (3.0.16):
     - ExpoModulesJSI
+    - ExpoModulesJSISwift
     - ExpoModulesTestCore
     - hermes-engine
     - RCTRequired
@@ -106,7 +108,13 @@ PODS:
     - hermes-engine
     - React-Core
     - ReactCommon
-  - ExpoModulesJSI/Tests (3.0.16):
+  - ExpoModulesJSISwift (3.0.16):
+    - ExpoModulesJSI
+    - hermes-engine
+    - React-Core
+    - ReactCommon
+  - ExpoModulesJSISwift/Tests (3.0.16):
+    - ExpoModulesJSI
     - hermes-engine
     - React-Core
     - ReactCommon
@@ -1908,7 +1916,8 @@ DEPENDENCIES:
   - ExpoModulesCore (from `../../../packages/expo-modules-core`)
   - ExpoModulesCore/Tests (from `../../../packages/expo-modules-core`)
   - ExpoModulesJSI (from `../../../packages/expo-modules-core`)
-  - ExpoModulesJSI/Tests (from `../../../packages/expo-modules-core`)
+  - ExpoModulesJSISwift (from `../../../packages/expo-modules-core`)
+  - ExpoModulesJSISwift/Tests (from `../../../packages/expo-modules-core`)
   - ExpoModulesTestCore (from `../../../packages/expo-modules-test-core/ios`)
   - FBLazyVector (from `../../../node_modules/react-native/Libraries/FBLazyVector`)
   - hermes-engine (from `../../../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
@@ -2004,6 +2013,9 @@ EXTERNAL SOURCES:
     inhibit_warnings: false
     :path: "../../../packages/expo-modules-core"
   ExpoModulesJSI:
+    inhibit_warnings: false
+    :path: "../../../packages/expo-modules-core"
+  ExpoModulesJSISwift:
     inhibit_warnings: false
     :path: "../../../packages/expo-modules-core"
   ExpoModulesTestCore:
@@ -2160,8 +2172,9 @@ SPEC CHECKSUMS:
   Expo: 01d451b186486cfcf17f2041b1ce8420298bd144
   ExpoAsset: a82f8f39a8f015b16ba247dc8463a9a8b42dd45c
   ExpoLogBox: b4c81de3f21bbe2e9467a26455563c76c7709efb
-  ExpoModulesCore: f03cb9094e6a76374e53484938cd11ec22fbf89a
-  ExpoModulesJSI: 2c2d3ab7f8e44d5dd1b29cd4f8e1c7e1a490f9ee
+  ExpoModulesCore: 21cd834157a128f0ef6e1a3c7d0143a443ea2929
+  ExpoModulesJSI: d37cc4b4808c2a2936cee4799d36676c16cf4ad5
+  ExpoModulesJSISwift: 2e55bc8dc39e1ed99b516d24b7abd6bc1f9dacb9
   ExpoModulesTestCore: e65555b75a4ed7dd3bcf421ad01d7748bd372c88
   FBLazyVector: 3a7ea85f6009224ad89f7daeda516f189e6b5759
   hermes-engine: e33c73080ec31b854de9f4c025d453cbcdfb10df
