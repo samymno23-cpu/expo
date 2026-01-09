@@ -46,6 +46,31 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
+- (BOOL)canBecomeFirstResponder
+{
+  return YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  [self becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+  [super viewWillDisappear:animated];
+  [self resignFirstResponder];
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent * _Nullable)event
+{
+  [super motionEnded:motion withEvent:event];
+  if (motion == UIEventSubtypeMotionShake && [DevMenuManager.shared getMotionGestureEnabled]) {
+    [DevMenuManager.shared toggleMenu];
+  }
+}
+
 #pragma mark - Screen Orientation
 
 - (BOOL)shouldAutorotate
@@ -60,6 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
     return NO;
   }
 }
+
 
 /**
  * supportedInterfaceOrienation has to defined by the currently visible app (to support multiple apps with different settings),
