@@ -35,18 +35,35 @@ export default function MainTabbedNavigator(props: any) {
         barStyle={{
           backgroundColor: Colors.tabBar,
           borderTopWidth: StyleSheet.hairlineWidth,
-          borderTopColor: Colors.tabIconDefault,
+          borderTopColor: Colors.border,
+          elevation: 8,
+          shadowColor: Colors.cardShadow,
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 4,
         }}
         // bottom-tabs props
         screenOptions={{
           headerShown: false,
-          tabBarActiveTintColor: Colors.tabIconSelected,
+          tabBarActiveTintColor: Colors.primary,
           tabBarInactiveTintColor: Colors.tabIconDefault,
           tabBarStyle: [
             {
               backgroundColor: Colors.tabBar,
+              borderTopWidth: 0,
+              elevation: 8,
+              shadowColor: Colors.cardShadow,
+              shadowOffset: { width: 0, height: -2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 4,
+              height: 60,
+              paddingBottom: 8,
             },
           ],
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontWeight: '600',
+          },
         }}>
         {Object.entries(Screens).map(([name, Screen]) => (
           <Tab.Screen
